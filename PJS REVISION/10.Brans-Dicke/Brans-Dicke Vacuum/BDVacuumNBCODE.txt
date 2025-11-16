@@ -1,0 +1,51 @@
+(* -------------------------------------------- *)
+(* 1. Parameters and scalar potential           *)
+(* -------------------------------------------- *)
+
+ClearAll["Global`*"];
+
+R0 = 1.*^-3;    (* wormhole throat 1 mm *)
+A  = 1.0;       (* scalar strength     *)
+w  = 10 R0;     (* Gaussian width      *)
+
+Phi[r_] := -A (1 - R0/r) Exp[-(r - R0)^2/w^2];
+
+(* -------------------------------------------- *)
+(* 2. Brans\[Dash]Dicke scalar field is Phi(r)        *)
+(*    BD vacuum equation: phi'' + 2 phi'/r = 0  *)
+(* -------------------------------------------- *)
+
+BDResidual[r_] := Module[{dp, ddp},
+  dp  = N[D[Phi[x], x] /. x -> r];
+  ddp = N[D[Phi[x], {x, 2}] /. x -> r];
+  ddp + (2/r) dp
+];
+
+(* -------------------------------------------- *)
+(* 3. Evaluate BD-residual at throat & far away *)
+(* -------------------------------------------- *)
+
+Print["\[CapitalPhi](0)  (limit) = ", Phi[R0]];
+Print["\[CapitalPhi]'(R0)      = ", N[D[Phi[x], x] /. x -> R0]];
+Print["\[CapitalPhi]''(R0)     = ", N[D[Phi[x], {x, 2}] /. x -> R0]];
+
+Print["BD residual at r = R0:   ", BDResidual[R0]];
+Print["BD residual at r = 2R0:  ", BDResidual[2 R0]];
+Print["BD residual at r = 5R0:  ", BDResidual[5 R0]];
+Print["BD residual at r = 10R0: ", BDResidual[10 R0]];
+
+Print["Limit of BD residual as r\[RightArrow]\[Infinity] = ",
+  Limit[BDResidual[r], r -> Infinity]
+];
+
+(* -------------------------------------------- *)
+(* 4. Plot BD residual                           *)
+(* -------------------------------------------- *)
+
+Plot[
+  BDResidual[r],
+  {r, R0, 10 R0},
+  AxesLabel -> {"r (m)", "BD residual"},
+  PlotRange -> All,
+  PlotLabel -> "Brans\[Dash]Dicke consistency residual"
+]

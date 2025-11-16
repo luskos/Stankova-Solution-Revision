@@ -1,0 +1,164 @@
+(* =============================== *)
+(*  Clear workspace                *)
+(* =============================== *)
+
+ClearAll["Global`*"]
+
+(* =============================== *)
+(*  Wormhole scalar potential      *)
+(* =============================== *)
+
+R0 = 1*10^-3;          (* 1 mm throat radius *)
+A = 1;                (* Potential strength *)
+w = 0.5*10^-3;        (* Width of Gaussian damping *)
+\[CurlyEpsilon] = 10^-6;            (* Regularization at r=0 *)
+
+r[x_, y_, z_] := Max[Sqrt[x^2 + y^2 + z^2], \[CurlyEpsilon]];
+
+\[CapitalPhi][x_, y_, z_] :=
+ Module[{\[Rho] = r[x, y, z]},
+  -A (1 - R0/\[Rho]) Exp[-(\[Rho] - R0)^2/w^2]
+ ]
+
+(* =============================== *)
+(*  Metric in isotropic Cartesian  *)
+(* =============================== *)
+
+gtt[x_, y_, z_] := -Exp[2 \[CapitalPhi][x, y, z]];
+gxx[x_, y_, z_] := Exp[-2 \[CapitalPhi][x, y, z]];
+gyy[x_, y_, z_] := Exp[-2 \[CapitalPhi][x, y, z]];
+gzz[x_, y_, z_] := Exp[-2 \[CapitalPhi][x, y, z]];
+
+metric = {
+   {gtt[x, y, z], 0, 0, 0},
+   {0, gxx[x, y, z], 0, 0},
+   {0, 0, gyy[x, y, z], 0},
+   {0, 0, 0, gzz[x, y, z]}
+};
+
+Print["Metric tensor:"];
+MatrixForm[metric]
+
+(* =============================== *)
+(*  Christoffel symbols            *)
+(* =============================== *)
+
+Print["\nCalculating Christoffel symbols..."];
+
+invMetric = Simplify[Inverse[metric]];
+coords = {t, x, y, z};
+
+\[CapitalGamma][\[Mu]_, \[Nu]_, \[Rho]_] :=
+ Sum[(1/2) invMetric[[\[Mu], \[Sigma]]]*
+    (D[metric[[\[Sigma], \[Nu]]], coords[[\[Rho]]]] +
+     D[metric[[\[Sigma], \[Rho]]], coords[[\[Nu]]]] -
+     D[metric[[\[Nu], \[Rho]]], coords[[\[Sigma]]]]),
+    {\[Sigma], 1, 4}
+ ]
+
+Print["Non-zero Christoffel symbols:"];
+Do[
+ If[Simplify[\[CapitalGamma][i, j, k]] =!= 0,
+   Print[Subscript[\[CapitalGamma], i, j, k], " = ", \[CapitalGamma][i, j, k]]
+ ],
+ {i, 1, 4}, {j, 1, 4}, {k, 1, 4}
+]
+
+(* =============================== *)
+(*  Riemann tensor                 *)
+(* =============================== *)
+
+Print["\nCalculating Riemann tensor..."];
+
+Riemann[\[Mu]_, \[Nu]_, \[Rho]_, \[Sigma]_] :=
+  D[\[CapitalGamma][\[Mu], \[Nu], \[Sigma]], coords[[\[Rho]]]] -
+  D[\[CapitalGamma][\[Mu], \[Nu], \[Rho]], coords[[\[Sigma]]]] +
+  Sum[
+    \[CapitalGamma][\[Mu], \[Kappa], \[Rho]] \[CapitalGamma][\[Kappa], \[Nu], \[Sigma]] -
+    \[CapitalGamma][\[Mu], \[Kappa], \[Sigma]] \[CapitalGamma][\[Kappa], \[Nu], \[Rho]],
+    {\[Kappa], 1, 4}
+  ];
+
+(* =============================== *)
+(*  Ricci tensor and scalar        *)
+(* =============================== *)
+
+Print["\nCalculating Ricci tensor and scalar..."];
+
+Ricci[\[Mu]_, \[Nu]_] := Sum[Riemann[\[Sigma], \[Mu], \[Sigma], \[Nu]], {\[Sigma], 1, 4}];
+
+RicciScalar =
+  Sum[invMetric[[\[Mu], \[Nu]]] Ricci[\[Mu], \[Nu]], {\[Mu], 1, 4}, {\[Nu], 1, 4}];
+
+(* =============================== *)
+(*  Einstein tensor                *)
+(* =============================== *)
+
+Print["\nCalculating Einstein tensor..."];
+
+Einstein[\[Mu]_, \[Nu]_] :=
+ Ricci[\[Mu], \[Nu]] - (1/2) metric[[\[Mu], \[Nu]]] RicciScalar;
+
+Print["Einstein tensor components:"];
+Do[
+ If[Simplify[Einstein[i, j]] =!= 0,
+  Print[Subscript[G, i, j], " = ", Einstein[i, j]]
+ ],
+ {i, 1, 4}, {j, 1, 4}
+]
+
+(* =============================== *)
+(*  Numerical evaluation           *)
+(* =============================== *)
+
+Print["\nEvaluating Einstein tensor at x = 1 mm, y = 0, z = 0:"];
+
+einsteinPoint =
+ Table[
+  Einstein[i, j] /. {x -> R0, y -> 0, z -> 0} // N,
+  {i, 4}, {j, 4}
+ ];
+
+MatrixForm[einsteinPoint]
+
+(* =============================== *)
+(*  ADM mass                       *)
+(* =============================== *)
+
+\[CapitalPhi]r[r_] := -A (1 - R0/r) Exp[-(r - R0)^2/w^2];
+
+ADMmass = Limit[r^2 D[\[CapitalPhi]r[r], r], r -> Infinity];
+
+Print["ADM mass = ", ADMmass];
+
+(* =============================== *)
+(*  Scalar\[Dash]field Lagrangian test   *)
+(* =============================== *)
+
+Print["\nLagrangian density for scalar field..."];
+
+phi[x_, y_, z_] := Exp[\[CapitalPhi][x, y, z]];
+
+dphidx = D[phi[x, y, z], x];
+dphidy = D[phi[x, y, z], y];
+dphidz = D[phi[x, y, z], z];
+
+kinTerm =
+  (1/2) (invMetric[[2, 2]] dphidx^2 +
+         invMetric[[3, 3]] dphidy^2 +
+         invMetric[[4, 4]] dphidz^2);
+
+detg = Simplify[Det[metric]];
+sqrtDetg = Simplify[Sqrt[Abs[detg]]];
+
+lagDensity =
+ Simplify[
+  sqrtDetg ((1/2) phi[x, y, z]^2 RicciScalar - kinTerm)
+ ];
+
+Print["Lagrangian density L\[CurlyPhi]:"];
+MatrixForm[lagDensity]
+
+Print["\nLagrangian at throat (x=R0,y=0,z=0): ",
+  lagDensity /. {x -> R0, y -> 0, z -> 0} // N
+];

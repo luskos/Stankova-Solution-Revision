@@ -1,0 +1,38 @@
+(*-----------------------------CLEAN SETUP-----------------------------*)
+ClearAll["Global`*"]
+
+(* Use previously stated 1mm wormhole parameters *)
+R0 = 1.0*10^-3;  (* 1 mm throat *)
+A0 = 1;          (* Amplitude *)
+w = 1.5*R0;      (* Width *)
+
+(* Previously stated potential - with explicit precision control *)
+potential[r_, A0_, R0_, w_] := -A0*(1 - R0/r)*Exp[-((r - R0)/w)^2];
+
+dPotential[r_, A0_, R0_, w_] := D[potential[r, A0, R0, w], r];
+ddPotential[r_, A0_, R0_, w_] := D[potential[r, A0, R0, w], {r, 2}];
+
+(* Omega integrand with precision control *)
+omegaIntegrand[r_, A0_, R0_, w_] := 
+  Module[{phi, dphi, ddphi, rSafe}, 
+   rSafe = SetPrecision[r, 30];  (* Ensure high precision *)
+   phi = potential[rSafe, A0, R0, w];
+   dphi = dPotential[rSafe, A0, R0, w];
+   ddphi = ddPotential[rSafe, A0, R0, w];
+   Exp[2 phi]*(ddphi + dphi/rSafe)*rSafe/(8 Pi)];
+
+(* Calculate total Omega with suppressed messages *)
+Print["Calculating total \[CapitalOmega] for 1mm wormhole..."];
+Print["Parameters: R0 = ", R0, ", A0 = ", A0, ", w = ", w];
+
+totalOmega = Quiet@NIntegrate[
+  omegaIntegrand[r, A0, R0, w], 
+  {r, R0, R0 + 5*w},
+  Method -> "GlobalAdaptive",
+  WorkingPrecision -> 30,
+  PrecisionGoal -> 8,
+  AccuracyGoal -> Infinity
+];
+
+Print["\n✅ Total \[CapitalOmega] = ", ScientificForm[totalOmega, 5]];
+Print["Raw value: ", totalOmega];

@@ -1,0 +1,43 @@
+(* ========================================= *)
+(* CORRECT FLARE-OUT TEST FOR YOUR EXACT METRIC *)
+(* ========================================= *)
+
+ClearAll["Global`*"];
+
+(* --- Your exact parameters --- *)
+R0 = 1.*10^-3;         (* 1 mm throat *)
+A = 1;
+w = 1.5 R0;
+\[Epsilon] = 0.1 R0;           (* Small regularization *)
+
+(* --- Your exact potential --- *)
+rCoord[x_, y_, z_] := Max[Sqrt[x^2 + y^2 + z^2], \[Epsilon]];
+\[CapitalPhi][r_] := -A (1 - R0/r) Exp[-((r - R0)^2)/w^2];
+
+(* --- Your exact metric --- *)
+(* ds\.b2 = -e^{2\[CapitalPhi](r)}dt\.b2 + e^{-2\[CapitalPhi](r)}(dr\.b2 + r\.b2d\[CapitalOmega]\.b2) *)
+
+(* --- Areal radius --- *)
+Rareal[r_] := Exp[-\[CapitalPhi][r]] * r;
+
+(* --- Flare-out condition --- *)
+dRareal = D[Rareal[r], r] /. r -> R0 // N;
+
+Print["\n--- Flare-Out Test for YOUR Exact Metric ---"];
+Print["Metric: ds\.b2 = -e^{2\[CapitalPhi]}dt\.b2 + e^{-2\[CapitalPhi]}(dr\.b2 + r\.b2d\[CapitalOmega]\.b2)"];
+Print["Potential: \[CapitalPhi](r) = -A(1-R0/r)Exp[-(r-R0)\.b2/w\.b2]"];
+Print["Parameters: R0 = ", R0, ", A = ", A, ", w = ", w];
+Print["Areal radius R_areal(r) = e^{-\[CapitalPhi](r)} r"];
+Print["dR_areal/dr at r = R0 = ", dRareal];
+
+If[dRareal > 0,
+  Print["✅ FLARE-OUT SATISFIED at throat."],
+  Print["❌ FLARE-OUT VIOLATED at throat."]
+];
+
+(* --- Detailed analysis at throat --- *)
+Print["\n--- Detailed Throat Analysis ---"];
+Print["\[CapitalPhi](R0) = ", \[CapitalPhi][R0] // N];
+Print["\[CapitalPhi]'(R0) = ", D[\[CapitalPhi][r], r] /. r -> R0 // N];
+Print["e^{-\[CapitalPhi](R0)} = ", Exp[-\[CapitalPhi][R0]] // N];
+Print["Flare factor = 1 - R0*\[CapitalPhi]'(R0) = ", 1 - R0*(D[\[CapitalPhi][r], r] /. r -> R0) // N];

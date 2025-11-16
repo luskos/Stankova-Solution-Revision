@@ -1,0 +1,159 @@
+(* ::Title:: *)
+(*Geodesic Traversal and Traversability Check in a 3+1D Wormhole Metric (1 mm Throat)*)
+
+(* ::Section:: *)
+(*Define Parameters and Potential*)
+
+(* Wormhole throat radius: 1 mm = 1*10^-3 m *)
+R0 = 1.*^-3;
+A = 1.0;        (* potential strength scale, > 0 *)
+w = 10 R0;      (* Gaussian damping width; scaled to the throat radius *)
+\[CurlyEpsilon] = 10^-6 R0;  (* small regulator to avoid r = 0 singularity *)
+
+\[CapitalPhi]Safe[x_, y_, z_] := 
+  Module[{r},
+   r = Max[Sqrt[x^2 + y^2 + z^2], \[CurlyEpsilon]];
+   -A (1 - R0/r) Exp[-(r - R0)^2/w^2]
+  ];
+
+(* ::Section:: *)
+(*Define the Metric Components*)
+
+f[x_, y_, z_] := Exp[2 \[CapitalPhi]Safe[x, y, z]];
+invf[x_, y_, z_] := Exp[-2 \[CapitalPhi]Safe[x, y, z]];
+
+(* This corresponds to:
+   ds^2 = -f dt^2 + invf (dx^2 + dy^2 + dz^2)
+   with f = e^{2 Φ(r)}, invf = e^{-2 Φ(r)}.
+*)
+
+(* ::Section:: *)
+(*Define the Lagrangian for Geodesic Motion*)
+
+Clear[t, x, y, z, s]
+
+L = -f[x[s], y[s], z[s]] t'[s]^2 + 
+     invf[x[s], y[s], z[s]] (x'[s]^2 + y'[s]^2 + z'[s]^2);
+
+(* ::Section:: *)
+(*Compute Euler-Lagrange Equations*)
+
+eqt = D[D[L, t'[s]], s] - D[L, t[s]] == 0;
+eqx = D[D[L, x'[s]], s] - D[L, x[s]] == 0;
+eqy = D[D[L, y'[s]], s] - D[L, y[s]] == 0;
+eqz = D[D[L, z'[s]], s] - D[L, z[s]] == 0;
+
+(* ::Section:: *)
+(*Initial Conditions and Numerical Integration for Timelike Geodesic*)
+
+(* Start slightly inside one side of the throat region, along the x-axis *)
+timelikeIC = {
+   t[0] == 0,
+   x[0] == 0.5 R0,
+   y[0] == 0,
+   z[0] == 0,
+   t'[0] == 1,     (* normalization determines affine parameter scaling *)
+   x'[0] == 1,     (* initial spatial velocity along +x *)
+   y'[0] == 0,
+   z'[0] == 0
+};
+
+timelikeSol = 
+  NDSolve[{eqt, eqx, eqy, eqz} ~Join~ timelikeIC, 
+          {t, x, y, z}, {s, 0, 10},
+          MaxStepFraction -> 1/100];
+
+(* ::Section:: *)
+(*Plot the Geodesic Path (3D)*)
+
+ParametricPlot3D[
+  Evaluate[{x[s], y[s], z[s]} /. timelikeSol],
+  {s, 0, 10},
+  PlotRange -> All,
+  AxesLabel -> {"x (m)", "y (m)", "z (m)"},
+  PlotLabel -> 
+   "Timelike Geodesic Path Through 1 mm Wormhole (Conformally Flat Metric)"
+]
+
+(* ::Section:: *)
+(*Output Final Position*)
+
+Print[
+  "Final position after s = 10: ",
+  {x[10], y[10], z[10]} /. timelikeSol
+];
+
+(* ::Section:: *)
+(*Null Geodesic Case*)
+
+Lnull = -f[x[s], y[s], z[s]] t'[s]^2 + 
+         invf[x[s], y[s], z[s]] (x'[s]^2 + y'[s]^2 + z'[s]^2);
+
+eqtN = D[D[Lnull, t'[s]], s] - D[Lnull, t[s]] == 0;
+eqxN = D[D[Lnull, x'[s]], s] - D[Lnull, x[s]] == 0;
+eqyN = D[D[Lnull, y'[s]], s] - D[Lnull, y[s]] == 0;
+eqzN = D[D[Lnull, z'[s]], s] - D[Lnull, z[s]] == 0;
+
+nullIC = {
+   t[0] == 0,
+   x[0] == 0.5 R0,
+   y[0] == 0,
+   z[0] == 0,
+   t'[0] == 1,
+   x'[0] == 1,
+   y'[0] == 0,
+   z'[0] == 0
+};
+
+nullSol = 
+  NDSolve[{eqtN, eqxN, eqyN, eqzN} ~Join~ nullIC, 
+          {t, x, y, z}, {s, 0, 10},
+          MaxStepFraction -> 1/100];
+
+ParametricPlot3D[
+  Evaluate[{x[s], y[s], z[s]} /. nullSol],
+  {s, 0, 10},
+  PlotRange -> All,
+  AxesLabel -> {"x (m)", "y (m)", "z (m)"},
+  PlotLabel -> "Null Geodesic Path Through 1 mm Wormhole"
+]
+
+(* ::Section:: *)
+(*Animated Traversal (Timelike Geodesic)*)
+
+frames3D = Table[
+   Graphics3D[
+    {
+     Red, PointSize[Large],
+     Point[Evaluate[{x[s], y[s], z[s]} /. timelikeSol]]
+    },
+    PlotRange -> {{-3 R0, 12 R0}, {-3 R0, 3 R0}, {-3 R0, 3 R0}},
+    Axes -> True,
+    AxesLabel -> {"x (m)", "y (m)", "z (m)"},
+    BoxRatios -> {4, 1, 1}
+   ],
+   {s, 0, 10, 0.5}
+];
+
+ListAnimate[frames3D]
+
+(* ::Section:: *)
+(*Potential Visualization (Equatorial Plane z = 0)*)
+
+Plot3D[
+  \[CapitalPhi]Safe[x, y, 0],
+  {x, -3 R0, 3 R0}, {y, -3 R0, 3 R0},
+  PlotLabel -> 
+   "Scalar Potential \[CapitalPhi](x,y,z=0) for 1 mm Wormhole",
+  AxesLabel -> {"x (m)", "y (m)", "\[CapitalPhi]"},
+  PlotRange -> All
+]
+
+(* Optional: radial potential along x-axis (y = z = 0) *)
+Plot[
+  \[CapitalPhi]Safe[r, 0, 0],
+  {r, 0.1 R0, 5 R0},
+  PlotLabel -> 
+   "Radial Profile of \[CapitalPhi](r) Along x-Axis (y=z=0)",
+  AxesLabel -> {"r (m)", "\[CapitalPhi]"}
+]
