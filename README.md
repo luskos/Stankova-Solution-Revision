@@ -13,7 +13,7 @@ field crosses the meta material anisotropic thin shell it will exite it to produ
 All the calculations provided have the purpose to show the viability of such arrangement with current tech. If not ideally a near future tech.
 It's a mix of theories navigated trough towards a practical realization of such spatial defect.
 
-This is a passion project. It's as feasable as all the rest official theories about wormholes and timeravel that also doesn't yet work.
+This is a passion project. It's as feasable as all the rest official theories about wormholes and timetravel that also doesn't yet work.
 
 If anyone actually make it work please give 10 points to Gryffindor!
 
