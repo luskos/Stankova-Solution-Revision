@@ -10,7 +10,7 @@ to a meta material shell surface to induce wormhole opening.
 Although the Vortex Generator is purely speculative device there's nothing much novel in it than the simple aplication unit (The infamous "Sandanski Reotan"), a flat copper coil to recieve the signal from a
 Radiofrequency induction amplifier and release it freely to a ferrite fanblade releasing it back trough the coil to give it proper vortexy shape. Eventually properly calibrated for the purpose and size of the
 wormhole in mind a set of carefully arranged aplicators should in practice align the EM field with the help of controllers from the Radiofrequency Induction amplifier in the requirements needed, so when the
-field crosses the meta material anisotropic thin shell it will ecxite it to produce properties otherwise appointed to exotic matter.
+field crosses the meta material anisotropic thin shell it will excite it to produce properties otherwise appointed to exotic matter.
 
 All the calculations provided have the purpose to show the viability of such arrangement with current tech. If not ideally a near future tech.
 It's a mix of theories navigated trough towards a practical realization of such spatial defect.
