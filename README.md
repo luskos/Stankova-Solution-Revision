@@ -5,7 +5,7 @@ inovative Born-Infield Double Helix Electromagnetic Vortex uplifted from an idea
 
 Here is proposed a practical approach at realizing wormhole solution with a Well behaved Scalar Potential and Metric cheap energetically wise used in arangement with thin shell scalar surface of a meta material with
 anisotropic but physically plausible properties supported by a Vortex field generator to reshape the properties of the scalar. The idea is that the EM field will act as a kick to introduce exotic energy properties
-to a meta material shell surface to induce wormhole opening.
+to a meta material shell surface to induce wormhole opening by actually decoupling all exoticity away...go figure it's both in the same time, it's sometimes exotic sometimes LUN as Stoichkov says...
 
 Although the Vortex Generator is purely speculative device there's nothing much novel in it than the simple aplication unit (The infamous "Sandanski Reotan"), a flat copper coil to recieve the signal from a
 Radiofrequency induction amplifier and release it freely to a ferrite fanblade releasing it back trough the coil to give it proper vortexy shape. Eventually properly calibrated for the purpose and size of the
