@@ -1,7 +1,7 @@
 **A Morris–Thorne–Type Conformally Flat Traversable Wormhole with Decoupled Exoticity in Scalar–Tensor Gravity Supported by Born–Infeld Electrodynamics and a Field-Responsive Non-Exotic Thin-Shell Matter Layer, Admitting a Full Type IIB Flux Compactification Uplift**
 
 Better envisioned Stankova-Solution Morris-Thorne type of wormhole solution with a scalar potential conforming to Brans-Dicke theory with an anisotropic surface thin shell supported by
-inovative Born-Infield Double Helix Electromagnetic Vortex.
+inovative Born-Infield Double Helix Electromagnetic Vortex uplifted from an idea trough a dot graphic, 3d motion, 4d speculative object up to 10 dimensions of I can't find you elsewere but in the past...
 
 Here is proposed a practical approach at realizing wormhole solution with a Well behaved Scalar Potential and Metric cheap energetically wise used in arangement with thin shell scalar surface of a meta material with
 anisotropic but physically plausible properties supported by a Vortex field generator to reshape the properties of the scalar. The idea is that the EM field will act as a kick to introduce exotic energy properties
