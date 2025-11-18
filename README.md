@@ -22,3 +22,4 @@ There were another approach called Not-Petya
 So this time let it goes as Much-Petya!
 
 All names, surnames and places of origin used are coincidential fictionality of a broken brain.
+
