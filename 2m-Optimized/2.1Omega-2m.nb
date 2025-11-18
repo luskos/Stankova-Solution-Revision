@@ -1,0 +1,323 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     11238,        315]
+NotebookOptionsPosition[     10160,        290]
+NotebookOutlinePosition[     10560,        306]
+CellTagsIndexPosition[     10517,        303]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"-", "CLEAN"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"SETUP", "--"}], "--"}], "--"}], "--"}], "--"}], 
+              "--"}], "--"}], "--"}], "--"}], "--"}], "--"}], "--"}], "--"}], 
+      "--"}]}], "-"}], "*)"}], 
+  RowBox[{
+   RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], "\[IndentingNewLine]", 
+   "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Optimized", " ", "2"}], "-", 
+     RowBox[{"meter", " ", "wormhole", " ", "parameters"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"R0", "=", "2.0"}], ";"}], "       ", 
+   RowBox[{"(*", 
+    RowBox[{"2", " ", "meter", " ", "throat", " ", "radius"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"A0", "=", "0.01"}], ";"}], "      ", 
+   RowBox[{"(*", 
+    RowBox[{"optimized", " ", "amplitude"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"w", "=", "0.2"}], ";"}], "       ", 
+   RowBox[{"(*", 
+    RowBox[{"optimized", " ", "width"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"\[CurlyEpsilon]", "=", "0.04"}], ";"}], "      ", 
+   RowBox[{"(*", 
+    RowBox[{"regulator", "-", 
+     RowBox[{"not", " ", "needed", " ", "directly", " ", "here"}]}], "*)"}], 
+   "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Using optimized wormhole parameters:\>\"", "]"}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<R0 = \>\"", ",", "R0", ",", "\"\<, A0 = \>\"", ",", "A0", 
+      ",", "\"\<, w = \>\"", ",", "w", ",", "\"\<, \[CurlyEpsilon] = \>\"", ",",
+       "\[CurlyEpsilon]"}], "]"}], ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Conformal", " ", "potential", " ", "\[CapitalPhi]", 
+     RowBox[{"(", "r", ")"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"potential", "[", 
+      RowBox[{"r_", ",", "A0_", ",", "R0_", ",", "w_"}], "]"}], ":=", 
+     RowBox[{
+      RowBox[{"-", "A0"}], "*", 
+      RowBox[{"(", 
+       RowBox[{"1", "-", 
+        RowBox[{"R0", "/", "r"}]}], ")"}], "*", 
+      RowBox[{"Exp", "[", 
+       RowBox[{"-", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"r", "-", "R0"}], ")"}], "/", "w"}], ")"}], "^", "2"}]}], 
+       "]"}]}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"dPotential", "[", 
+      RowBox[{"r_", ",", "A0_", ",", "R0_", ",", "w_"}], "]"}], ":=", 
+     RowBox[{"D", "[", 
+      RowBox[{
+       RowBox[{"potential", "[", 
+        RowBox[{"r", ",", "A0", ",", "R0", ",", "w"}], "]"}], ",", "r"}], 
+      "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ddPotential", "[", 
+      RowBox[{"r_", ",", "A0_", ",", "R0_", ",", "w_"}], "]"}], ":=", 
+     RowBox[{"D", "[", 
+      RowBox[{
+       RowBox[{"potential", "[", 
+        RowBox[{"r", ",", "A0", ",", "R0", ",", "w"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"r", ",", "2"}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"\[CapitalOmega]", " ", "integrand", " ", 
+     RowBox[{"(", 
+      RowBox[{
+      "same", " ", "form", " ", "as", " ", "your", " ", "1", "mm", " ", 
+       "version"}], ")"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"omegaIntegrand", "[", 
+      RowBox[{"r_", ",", "A0_", ",", "R0_", ",", "w_"}], "]"}], ":=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"phi", ",", "dphi", ",", "ddphi", ",", "rSafe"}], "}"}], ",", 
+       RowBox[{
+        RowBox[{"rSafe", "=", 
+         RowBox[{"SetPrecision", "[", 
+          RowBox[{"r", ",", "30"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"phi", "=", 
+         RowBox[{"potential", "[", 
+          RowBox[{"rSafe", ",", "A0", ",", "R0", ",", "w"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"dphi", "=", 
+         RowBox[{"dPotential", "[", 
+          RowBox[{"rSafe", ",", "A0", ",", "R0", ",", "w"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"ddphi", "=", 
+         RowBox[{"ddPotential", "[", 
+          RowBox[{"rSafe", ",", "A0", ",", "R0", ",", "w"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Exp", "[", 
+          RowBox[{"2", " ", "phi"}], "]"}], "*", 
+         RowBox[{"(", 
+          RowBox[{"ddphi", "+", 
+           RowBox[{"dphi", "/", "rSafe"}]}], ")"}], "*", 
+         RowBox[{"rSafe", "/", 
+          RowBox[{"(", 
+           RowBox[{"8", " ", "Pi"}], ")"}]}]}]}]}], "]"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<\\nCalculating total \[CapitalOmega] for the optimized \
+2-meter wormhole...\>\"", "]"}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"totalOmega", "=", 
+     RowBox[{"Quiet", "@", 
+      RowBox[{"NIntegrate", "[", 
+       RowBox[{
+        RowBox[{"omegaIntegrand", "[", 
+         RowBox[{"r", ",", "A0", ",", "R0", ",", "w"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"r", ",", "R0", ",", 
+          RowBox[{"R0", "+", 
+           RowBox[{"5", " ", "w"}]}]}], "}"}], ",", 
+        RowBox[{"Method", "->", "\"\<GlobalAdaptive\>\""}], ",", 
+        RowBox[{"WorkingPrecision", "->", "30"}], ",", 
+        RowBox[{"PrecisionGoal", "->", "8"}], ",", 
+        RowBox[{"AccuracyGoal", "->", "Infinity"}]}], "]"}]}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<\\n--------------------------------------------\>\"", 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<   \:2714 Total \[CapitalOmega] = \>\"", ",", 
+      RowBox[{"ScientificForm", "[", 
+       RowBox[{"totalOmega", ",", "5"}], "]"}]}], "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<--------------------------------------------\>\"", 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Raw value: \>\"", ",", "totalOmega"}], "]"}], ";"}], 
+   "\n"}]}]], "Input",
+ CellChangeTimes->{{3.9724185767268715`*^9, 3.9724185767268715`*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"da4e43de-b1cb-6a47-b749-4f21440aab0c"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Using optimized wormhole parameters:\"\>"], "Print",
+ CellChangeTimes->{3.972418578228718*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"7ffb31c7-f174-6a47-af1f-b51cdefe9487"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"R0 = \"\>", "\[InvisibleSpace]", "2.`", 
+   "\[InvisibleSpace]", "\<\", A0 = \"\>", "\[InvisibleSpace]", "0.01`", 
+   "\[InvisibleSpace]", "\<\", w = \"\>", "\[InvisibleSpace]", "0.2`", 
+   "\[InvisibleSpace]", "\<\", \[CurlyEpsilon] = \"\>", "\[InvisibleSpace]", 
+   "0.04`"}],
+  SequenceForm[
+  "R0 = ", 2., ", A0 = ", 0.01, ", w = ", 0.2, ", \[CurlyEpsilon] = ", 0.04],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9724185782337074`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"99ffcf72-26ef-614a-a517-7488cf53fffd"],
+
+Cell[BoxData["\<\"\\nCalculating total \[CapitalOmega] for the optimized \
+2-meter wormhole...\"\>"], "Print",
+ CellChangeTimes->{3.972418578236704*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"cfd4cba6-ab25-d143-8080-91df5fc9df45"],
+
+Cell[BoxData["\<\"\\n--------------------------------------------\"\>"], \
+"Print",
+ CellChangeTimes->{3.972418578385708*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"058c332f-dd20-f743-ba81-db7ed1287ee0"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"   \:2714 Total \[CapitalOmega] = \"\>", "\[InvisibleSpace]", 
+   TagBox[
+    InterpretationBox[
+     StyleBox[
+      RowBox[{"\<\"3.9753\"\>", "\[Times]", 
+       SuperscriptBox["10", "\<\"-4\"\>"]}],
+      ShowStringCharacters->False],
+     0.0003975324490430518019940454409009998486347110738802189078`30.,
+     AutoDelete->True],
+    ScientificForm[#, 5]& ]}],
+  SequenceForm["   \:2714 Total \[CapitalOmega] = ", 
+   ScientificForm[
+   0.0003975324490430518019940454409009998486347110738802189078`30., 5]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9724185783867054`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"44dda33c-9e03-8442-a888-e16fcc67e412"],
+
+Cell[BoxData["\<\"--------------------------------------------\"\>"], "Print",
+ CellChangeTimes->{3.9724185783887043`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"56ac31af-a5d2-fe44-b1a4-d7da691220fd"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Raw value: \"\>", "\[InvisibleSpace]", 
+   "0.0003975324490430518019940454409009998486347110738802189078`30."}],
+  SequenceForm[
+  "Raw value: ", 
+   0.0003975324490430518019940454409009998486347110738802189078`30.],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.972418578389721*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"0ccdc6c8-4e3d-2342-a6df-fe9c00eaffa7"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1141.2, 573.6},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"6588763b-da41-6d4c-9c16-b3804c2f0ede"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 6809, 187, 656, "Input",ExpressionUUID->"da4e43de-b1cb-6a47-b749-4f21440aab0c"],
+Cell[CellGroupData[{
+Cell[7410, 213, 216, 4, 22, "Print",ExpressionUUID->"7ffb31c7-f174-6a47-af1f-b51cdefe9487"],
+Cell[7629, 219, 599, 13, 22, "Print",ExpressionUUID->"99ffcf72-26ef-614a-a517-7488cf53fffd"],
+Cell[8231, 234, 256, 5, 39, "Print",ExpressionUUID->"cfd4cba6-ab25-d143-8080-91df5fc9df45"],
+Cell[8490, 241, 229, 5, 39, "Print",ExpressionUUID->"058c332f-dd20-f743-ba81-db7ed1287ee0"],
+Cell[8722, 248, 737, 19, 22, "Print",ExpressionUUID->"44dda33c-9e03-8442-a888-e16fcc67e412"],
+Cell[9462, 269, 226, 4, 22, "Print",ExpressionUUID->"56ac31af-a5d2-fe44-b1a4-d7da691220fd"],
+Cell[9691, 275, 441, 11, 22, "Print",ExpressionUUID->"0ccdc6c8-4e3d-2342-a6df-fe9c00eaffa7"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

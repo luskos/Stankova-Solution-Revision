@@ -1,0 +1,390 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     13892,        382]
+NotebookOptionsPosition[     11970,        348]
+NotebookOutlinePosition[     12370,        364]
+CellTagsIndexPosition[     12327,        361]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "=="}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"CORRECT", " ", "FLARE"}], "-", 
+    RowBox[{
+    "OUT", " ", "TEST", " ", "FOR", " ", "YOUR", " ", "EXACT", " ", 
+     "METRIC"}]}], "*)"}], 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+     "===", "===", "=="}], "*)"}], 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"--", 
+       RowBox[{"-", "Your"}]}], " ", "exact", " ", 
+      RowBox[{"parameters", "--"}]}], "-"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"R0", "=", "2.0"}], "\n", 
+   RowBox[{"w", "=", "0.2"}], "\n", 
+   RowBox[{"A", "=", "0.01"}], "\n", 
+   RowBox[{"\[CurlyEpsilon]", "=", "0.04"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"--", 
+       RowBox[{"-", "Your"}]}], " ", "exact", " ", 
+      RowBox[{"potential", "--"}]}], "-"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"rCoord", "[", 
+      RowBox[{"x_", ",", "y_", ",", "z_"}], "]"}], ":=", 
+     RowBox[{"Max", "[", 
+      RowBox[{
+       RowBox[{"Sqrt", "[", 
+        RowBox[{
+         RowBox[{"x", "^", "2"}], "+", 
+         RowBox[{"y", "^", "2"}], "+", 
+         RowBox[{"z", "^", "2"}]}], "]"}], ",", "\[Epsilon]"}], "]"}]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[CapitalPhi]", "[", "r_", "]"}], ":=", 
+     RowBox[{
+      RowBox[{"-", "A"}], " ", 
+      RowBox[{"(", 
+       RowBox[{"1", "-", 
+        RowBox[{"R0", "/", "r"}]}], ")"}], " ", 
+      RowBox[{"Exp", "[", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"r", "-", "R0"}], ")"}], "^", "2"}], ")"}]}], "/", 
+        RowBox[{"w", "^", "2"}]}], "]"}]}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"--", 
+       RowBox[{"-", "Your"}]}], " ", "exact", " ", 
+      RowBox[{"metric", "--"}]}], "-"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"ds\.b2", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"e", "^", 
+         RowBox[{"{", 
+          RowBox[{"2", "\[CapitalPhi]", 
+           RowBox[{"(", "r", ")"}]}], "}"}]}]}], "dt\.b2"}], "+", 
+      RowBox[{
+       RowBox[{"e", "^", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "2"}], "\[CapitalPhi]", 
+          RowBox[{"(", "r", ")"}]}], "}"}]}], 
+       RowBox[{"(", 
+        RowBox[{"dr\.b2", "+", "r\.b2d\[CapitalOmega]\.b2"}], ")"}]}]}]}], 
+    "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"--", 
+       RowBox[{"-", "Areal"}]}], " ", 
+      RowBox[{"radius", "--"}]}], "-"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Rareal", "[", "r_", "]"}], ":=", 
+     RowBox[{
+      RowBox[{"Exp", "[", 
+       RowBox[{"-", 
+        RowBox[{"\[CapitalPhi]", "[", "r", "]"}]}], "]"}], "*", "r"}]}], 
+    ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"--", 
+      RowBox[{"-", "Flare"}]}], "-", 
+     RowBox[{"out", " ", 
+      RowBox[{"condition", "--"}]}], "-"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"dRareal", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"D", "[", 
+        RowBox[{
+         RowBox[{"Rareal", "[", "r", "]"}], ",", "r"}], "]"}], "/.", " ", 
+       RowBox[{"r", "->", "R0"}]}], "//", "N"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<\\n--- Flare-Out Test for YOUR Exact Metric ---\>\"", 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Metric: ds\.b2 = -e^{2\[CapitalPhi]}dt\.b2 + e^{-2\
+\[CapitalPhi]}(dr\.b2 + r\.b2d\[CapitalOmega]\.b2)\>\"", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Potential: \[CapitalPhi](r) = \
+-A(1-R0/r)Exp[-(r-R0)\.b2/w\.b2]\>\"", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Parameters: R0 = \>\"", ",", "R0", ",", "\"\<, A = \>\"", ",",
+       "A", ",", "\"\<, w = \>\"", ",", "w"}], "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Areal radius R_areal(r) = e^{-\[CapitalPhi](r)} r\>\"",
+      "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<dR_areal/dr at r = R0 = \>\"", ",", "dRareal"}], "]"}], 
+    ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"dRareal", ">", "0"}], ",", 
+      RowBox[{
+      "Print", "[", "\"\<\:2705 FLARE-OUT SATISFIED at throat.\>\"", "]"}], ",", 
+      RowBox[{
+      "Print", "[", "\"\<\:274c FLARE-OUT VIOLATED at throat.\>\"", "]"}]}], 
+     "]"}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"--", 
+       RowBox[{"-", "Detailed"}]}], " ", "analysis", " ", "at", " ", 
+      RowBox[{"throat", "--"}]}], "-"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<\\n--- Detailed Throat Analysis ---\>\"", "]"}], ";"}],
+    "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[CapitalPhi](R0) = \>\"", ",", 
+      RowBox[{
+       RowBox[{"\[CapitalPhi]", "[", "R0", "]"}], "//", "N"}]}], "]"}], ";"}],
+    "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[CapitalPhi]'(R0) = \>\"", ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"D", "[", 
+         RowBox[{
+          RowBox[{"\[CapitalPhi]", "[", "r", "]"}], ",", "r"}], "]"}], "/.", 
+        " ", 
+        RowBox[{"r", "->", "R0"}]}], "//", "N"}]}], "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<e^{-\[CapitalPhi](R0)} = \>\"", ",", 
+      RowBox[{
+       RowBox[{"Exp", "[", 
+        RowBox[{"-", 
+         RowBox[{"\[CapitalPhi]", "[", "R0", "]"}]}], "]"}], "//", "N"}]}], 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Flare factor = 1 - R0*\[CapitalPhi]'(R0) = \>\"", ",", 
+      RowBox[{
+       RowBox[{"1", "-", 
+        RowBox[{"R0", "*", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"D", "[", 
+            RowBox[{
+             RowBox[{"\[CapitalPhi]", "[", "r", "]"}], ",", "r"}], "]"}], "/.",
+            " ", 
+           RowBox[{"r", "->", "R0"}]}], ")"}]}]}], "//", "N"}]}], "]"}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.972410099718769*^9, 3.972410106368944*^9}, 
+   3.972418154377516*^9},
+ CellLabel->"In[1]:=",ExpressionUUID->"1ed9e1c9-be69-584d-8931-c3c2d71e1ee4"],
+
+Cell[BoxData["2.`"], "Output",
+ CellChangeTimes->{3.9724181566821785`*^9},
+ CellLabel->"Out[2]=",ExpressionUUID->"03be944b-0264-434c-9e46-52720f1aef06"],
+
+Cell[BoxData["0.2`"], "Output",
+ CellChangeTimes->{3.972418156684185*^9},
+ CellLabel->"Out[3]=",ExpressionUUID->"00f20683-1627-bf4d-ab61-5fcc1985effc"],
+
+Cell[BoxData["0.01`"], "Output",
+ CellChangeTimes->{3.97241815668618*^9},
+ CellLabel->"Out[4]=",ExpressionUUID->"78e28709-97ae-3548-99e7-e354be46129d"],
+
+Cell[BoxData["0.04`"], "Output",
+ CellChangeTimes->{3.9724181566871777`*^9},
+ CellLabel->"Out[5]=",ExpressionUUID->"fb2f007b-86d4-9d41-9e9d-e179baed6774"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"\\n--- Flare-Out Test for YOUR Exact Metric ---\"\>"], \
+"Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.9724181566891785`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"3d0e89f1-e722-2a44-8116-7dd6eccca4c1"],
+
+Cell[BoxData["\<\"Metric: ds\.b2 = -e^{2\[CapitalPhi]}dt\.b2 + e^{-2\
+\[CapitalPhi]}(dr\.b2 + r\.b2d\[CapitalOmega]\.b2)\"\>"], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.9724181566901608`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"0099f776-f401-d443-aa94-8511a05a9f99"],
+
+Cell[BoxData["\<\"Potential: \[CapitalPhi](r) = -A(1-R0/r)Exp[-(r-R0)\.b2/w\
+\.b2]\"\>"], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.9724181566921787`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"5a06bb23-8715-d240-b74f-9c218938b617"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Parameters: R0 = \"\>", "\[InvisibleSpace]", "2.`", 
+   "\[InvisibleSpace]", "\<\", A = \"\>", "\[InvisibleSpace]", "0.01`", 
+   "\[InvisibleSpace]", "\<\", w = \"\>", "\[InvisibleSpace]", "0.2`"}],
+  SequenceForm["Parameters: R0 = ", 2., ", A = ", 0.01, ", w = ", 0.2],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.972418156693186*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"9e2aee72-f954-844b-b595-d0622dda4688"],
+
+Cell[BoxData["\<\"Areal radius R_areal(r) = e^{-\[CapitalPhi](r)} r\"\>"], \
+"Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.9724181566941833`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"54a1a585-4ae6-bd4b-b004-20168b73d7c7"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"dR_areal/dr at r = R0 = \"\>", "\[InvisibleSpace]", "1.01`"}],
+  SequenceForm["dR_areal/dr at r = R0 = ", 1.01],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.972418156695183*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"8f0eceaf-ab1b-5c48-995e-da7d64a762e3"],
+
+Cell[BoxData["\<\"\:2705 FLARE-OUT SATISFIED at throat.\"\>"], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.972418156695183*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"4d96a167-2ddb-4a47-aad2-5cff44fdcfbb"],
+
+Cell[BoxData["\<\"\\n--- Detailed Throat Analysis ---\"\>"], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.9724181566962643`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"7ee25acd-79a6-6d48-b8d9-64829255b8f2"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[CapitalPhi](R0) = \"\>", "\[InvisibleSpace]", "0.`"}],
+  SequenceForm["\[CapitalPhi](R0) = ", 0.],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.9724181566972427`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"0e29cd14-d349-c547-946e-04743765b220"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[CapitalPhi]'(R0) = \"\>", "\[InvisibleSpace]", 
+   RowBox[{"-", "0.005`"}]}],
+  SequenceForm["\[CapitalPhi]'(R0) = ", -0.005],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.972418156698263*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"c97532a1-3984-a54d-a292-2a98bb6df630"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"e^{-\[CapitalPhi](R0)} = \"\>", "\[InvisibleSpace]", "1.`"}],
+  SequenceForm["e^{-\[CapitalPhi](R0)} = ", 1.],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.972418156699217*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"069c607a-0e21-7040-84d2-989775fbd010"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Flare factor = 1 - R0*\[CapitalPhi]'(R0) = \"\>", "\[InvisibleSpace]",
+    "1.01`"}],
+  SequenceForm["Flare factor = 1 - R0*\[CapitalPhi]'(R0) = ", 1.01],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.972410110267639*^9, 3.9724181567002487`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"849dd4c0-ceeb-604b-afae-7f7f05acedcd"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1141.2, 573.6},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"d4ecd93b-8bf9-be4e-9af5-00bf480877b9"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 6768, 200, 715, "Input",ExpressionUUID->"1ed9e1c9-be69-584d-8931-c3c2d71e1ee4"],
+Cell[7347, 224, 152, 2, 32, "Output",ExpressionUUID->"03be944b-0264-434c-9e46-52720f1aef06"],
+Cell[7502, 228, 151, 2, 32, "Output",ExpressionUUID->"00f20683-1627-bf4d-ab61-5fcc1985effc"],
+Cell[7656, 232, 151, 2, 32, "Output",ExpressionUUID->"78e28709-97ae-3548-99e7-e354be46129d"],
+Cell[7810, 236, 154, 2, 32, "Output",ExpressionUUID->"fb2f007b-86d4-9d41-9e9d-e179baed6774"],
+Cell[CellGroupData[{
+Cell[7989, 242, 253, 5, 39, "Print",ExpressionUUID->"3d0e89f1-e722-2a44-8116-7dd6eccca4c1"],
+Cell[8245, 249, 306, 5, 22, "Print",ExpressionUUID->"0099f776-f401-d443-aa94-8511a05a9f99"],
+Cell[8554, 256, 268, 5, 22, "Print",ExpressionUUID->"5a06bb23-8715-d240-b74f-9c218938b617"],
+Cell[8825, 263, 517, 10, 22, "Print",ExpressionUUID->"9e2aee72-f954-844b-b595-d0622dda4688"],
+Cell[9345, 275, 255, 5, 22, "Print",ExpressionUUID->"54a1a585-4ae6-bd4b-b004-20168b73d7c7"],
+Cell[9603, 282, 359, 8, 22, "Print",ExpressionUUID->"8f0eceaf-ab1b-5c48-995e-da7d64a762e3"],
+Cell[9965, 292, 239, 4, 22, "Print",ExpressionUUID->"4d96a167-2ddb-4a47-aad2-5cff44fdcfbb"],
+Cell[10207, 298, 239, 4, 39, "Print",ExpressionUUID->"7ee25acd-79a6-6d48-b8d9-64829255b8f2"],
+Cell[10449, 304, 349, 8, 22, "Print",ExpressionUUID->"0e29cd14-d349-c547-946e-04743765b220"],
+Cell[10801, 314, 375, 9, 22, "Print",ExpressionUUID->"c97532a1-3984-a54d-a292-2a98bb6df630"],
+Cell[11179, 325, 357, 8, 22, "Print",ExpressionUUID->"069c607a-0e21-7040-84d2-989775fbd010"],
+Cell[11539, 335, 403, 9, 22, "Print",ExpressionUUID->"849dd4c0-ceeb-604b-afae-7f7f05acedcd"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
